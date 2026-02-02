@@ -1,0 +1,22 @@
+SOP TITLE: Machine Operation
+DEPARTMENT: Manufacturing_Department
+VERSION: v1.0
+
+1.0 Purpose
+This SOP defines the standard procedure for machine operation in the Manufacturing_Department.
+
+2.0 Safety and Compliance
+All personnel must follow organizational safety guidelines.
+Unauthorized access is prohibited.
+
+3.0 Pre-Operation Checks
+Verify readiness of systems or equipment.
+Ensure authorization before proceeding.
+
+4.0 Operating Procedure
+Execute steps defined for machine operation.
+Monitor activities continuously.
+
+5.0 Shutdown or Closure Procedure
+Safely stop activities.
+Secure systems and update logs.

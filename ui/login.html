@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SOP Login</title>
+</head>
+<body>
+    <h2>SOP Portal Login</h2>
+
+    <input id="username" placeholder="Enter username" />
+    <button onclick="login()">Login</button>
+
+    <p id="msg"></p>
+
+<script>
+async function login() {
+    const username = document.getElementById("username").value;
+    const msg = document.getElementById("msg");
+
+    if (!username) {
+        msg.innerText = "❌ Please enter username";
+        return;
+    }
+
+    const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.innerText = "❌ " + data.detail;
+        return;
+    }
+
+    // success → go to SOP page
+    window.location.href = "/ui/sop.html";
+}
+</script>
+</body>
+</html>
