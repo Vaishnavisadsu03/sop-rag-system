@@ -20,13 +20,13 @@ Result: Returns the correct IT department SOP even if the words don’t exactly 
 
 🔹 Tech Stack Used
 
-✔ Backend: FastAPI (Python)
-✔ Database: PostgreSQL
-✔ Vector Search: pgvector
-✔ Embeddings: Sentence Transformers
-✔ Authentication: JWT (JSON Web Token)
-✔ Frontend: HTML, CSS, JavaScript
-✔ ORM / DB Access: SQLAlchemy
+1. Backend: FastAPI (Python)
+2. Database: PostgreSQL
+3. Vector Search: pgvector
+4. Embeddings: Sentence Transformers
+5. Authentication: JWT (JSON Web Token)
+6. Frontend: HTML, CSS, JavaScript
+7. ORM / DB Access: SQLAlchemy
 
 🔹 How the system works (Step by Step)
 
@@ -42,6 +42,7 @@ SOP files are stored in folders like:
     Stored in PostgreSQL using pgvector
     
 2️⃣ User Login
+
 ✔ User logs in using username & password
 ✔ Backend verifies credentials
 ✔ A JWT token is generated
@@ -51,10 +52,10 @@ SOP files are stored in folders like:
 
 ✔ User types a question in the UI
 ✔ Backend:
-    Converts the query into an embedding
-    Performs vector similarity search
-    Filters SOPs based on user’s sector
-    Returns the most relevant SOP
+    1. Converts the query into an embedding
+    2. Performs vector similarity search
+    3. Filters SOPs based on user’s sector
+    4. Returns the most relevant SOP
 
 4️⃣ Result Display
 
@@ -62,26 +63,9 @@ SOP files are stored in folders like:
     SOP name
     SOP content
     Similarity distance score
-
-🔹 SOP RAG System – Horizontal Architecture Diagram
-┌─────────────┐      ┌──────────────┐      ┌────────────────────┐      ┌─────────────────────────┐
-│   USER      │ ---> │   WEB UI     │ ---> │   FASTAPI BACKEND   │ ---> │  POSTGRESQL + PGVECTOR  │
-│ (Browser)   │      │ (HTML / JS)  │      │                    │      │                         │
-└─────────────┘      └──────────────┘      │  ┌──────────────┐  │      │  • SOP Text             │
-                                           │  │ Authentication│  │      │  • SOP Metadata         │
-                                           │  │   (JWT)       │  │      │  • SOP Embeddings       │
-                                           │  └──────────────┘  │      │                         │
-                                           │          │         │      └─────────────────────────┘
-                                           │          ▼         │
-                                           │  ┌────────────────┐│
-                                           │  │ Vector Search  ││
-                                           │  │ (Similarity)   ││
-                                           │  └────────────────┘│
-                                           └────────────────────┘
-
-
-
+    
 🔹 Why not keyword search?
+
 ✔ Keyword Search	                    ✔ Semantic Search (This Project)
 Exact word match	                    Meaning-based match
 Misses relevant SOPs	                Finds correct SOP
@@ -114,6 +98,7 @@ http://127.0.0.1:8000/
 ✔ Clean and simple UI
 
 🔹 Challenges Solved (Important)
+
  1. pgvector type casting issues
  2. SQLAlchemy + PostgreSQL compatibility
  3. Embedding consistency
