@@ -1,29 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SOP Retrieval</title>
+  <title>SOP Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #15803d;
+    }
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .meta {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
     <h2>SOP Retrieval System</h2>
 
-    <input id="query" placeholder="Enter SOP query" size="50"/>
+    <input id="query" placeholder="Ask your SOP question..." />
     <button onclick="ask()">Search</button>
 
-    <pre id="result"></pre>
+    <div class="result" id="result"></div>
+  </div>
 
 <script>
 async function ask() {
-    const query = document.getElementById("query").value;
+  const query = document.getElementById("query").value;
+  const resultBox = document.getElementById("result");
 
-    const res = await fetch("/query-sop", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ query })
-    });
+  if (!query) {
+    resultBox.innerText = "Please enter a question.";
+    return;
+  }
 
-    const data = await res.json();
-    document.getElementById("result").innerText =
-        JSON.stringify(data, null, 2);
+  resultBox.innerText = "Searching SOP...";
+
+  const res = await fetch("/query-sop", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ query })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    resultBox.innerText = data.detail || "Error fetching SOP";
+    return;
+  }
+
+  resultBox.innerHTML = `
+    <div class="meta">
+      <b>Plant:</b> ${data.plant} |
+      <b>SOP:</b> ${data.sop_name} |
+      <b>Distance:</b> ${data.distance.toFixed(4)}
+    </div>
+    ${data.content}
+  `;
 }
 </script>
 </body>

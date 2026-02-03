@@ -8,19 +8,20 @@ from config import SECRET_KEY, ALGORITHM
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-def authenticate_user(username, password_attempt):
+def authenticate_user(username, password):
     with engine.connect() as conn:
         user = conn.execute(
-            text("SELECT username, password, sector FROM users WHERE username = :u"),
+            text("SELECT username, password, sector FROM users WHERE username=:u"),
             {"u": username}
         ).fetchone()
-    if user and verify_password(password_attempt, user.password):
+
+    if user and verify_password(password, user.password):
         return {"username": user.username, "sector": user.sector}
     return None
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return {"username": payload.get("sub"), "sector": payload.get("sector")}
+        return {"username": payload["sub"], "sector": payload["sector"]}
     except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=401, detail="Invalid token")
